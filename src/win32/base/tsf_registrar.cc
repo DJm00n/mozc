@@ -78,7 +78,7 @@ HRESULT TsfRegistrar::RegisterProfiles(const wchar_t *path, DWORD path_length) {
   // If you might want to create the manager object w/o calling the pair of
   // CoInitialize/CoUninitialize, there is a helper function to retrieve the
   // object.
-  // http://msdn.microsoft.com/en-us/library/ms629059.aspx
+  // https://learn.microsoft.com/windows/win32/api/msctf/nf-msctf-tf_createinputprocessorprofiles
   auto profiles = ComCreateInstance<ITfInputProcessorProfiles>(
       CLSID_TF_InputProcessorProfiles);
   if (!profiles) {
@@ -107,19 +107,19 @@ HRESULT TsfRegistrar::RegisterProfiles(const wchar_t *path, DWORD path_length) {
       // used by SHLoadIndirectString to display appropriate string based on
       // the current UI language.
       // This mechanism is called "Registry String Redirection".
-      //   http://msdn.microsoft.com/en-us/library/dd374120.aspx
+      //   https://learn.microsoft.com/windows/win32/intl/using-registry-string-redirection
       // You can find similar string based on "Registry String Redirection"
       // used by the TSF:
       //   HKLM\SOFTWARE\Microsoft\CTF\TIP\<TextService CLSID>\LanguageProfile
       //       \<LangID>\<Profile GUID>\Display Description
-      // Therefore, it is considered that arguments "pchFile" and "pchFile" of
+      // Therefore, it is considered that arguments "pchFile" and "uResId" of
       // the SetLanguageProfileDisplayName is resource file name and string
-      // resource id, respectively.
+      // resource ID, respectively.
 
       // You should use a new resource ID when you need to update the MUI text
       // because SetLanguageProfileDisplayName does not support version
       // modifiers.  See b/2994558 and the following article for details.
-      // http://msdn.microsoft.com/en-us/library/bb759919.aspx
+      // https://learn.microsoft.com/windows/win32/api/shlwapi/nf-shlwapi-shloadindirectstring
       HRESULT set_display_name_result =
           profiles_ex->SetLanguageProfileDisplayName(
               TsfProfile::GetTextServiceGuid(), TsfProfile::GetLangId(),
@@ -140,7 +140,7 @@ void TsfRegistrar::UnregisterProfiles() {
   // If you might want to create the manager object w/o calling the pair of
   // CoInitialize/CoUninitialize, there is a helper function to retrieve the
   // object.
-  // http://msdn.microsoft.com/en-us/library/ms629059.aspx
+  // https://learn.microsoft.com/windows/win32/api/msctf/nf-msctf-tf_createinputprocessorprofiles
   auto profiles = ComCreateInstance<ITfInputProcessorProfiles>(
       CLSID_TF_InputProcessorProfiles);
   if (profiles) {
@@ -154,7 +154,7 @@ HRESULT TsfRegistrar::RegisterCategories() {
   // If you might want to create the manager object w/o calling the pair of
   // CoInitialize/CoUninitialize, there is a helper function to retrieve the
   // object.
-  // http://msdn.microsoft.com/en-us/library/aa383439.aspx
+  // https://learn.microsoft.com/windows/win32/api/msctf/nf-msctf-tf_createcategorymgr
   auto category = ComCreateInstance<ITfCategoryMgr>(CLSID_TF_CategoryMgr);
   if (!category) {
     return E_FAIL;
@@ -177,7 +177,7 @@ void TsfRegistrar::UnregisterCategories() {
   // If you might want to create the manager object w/o calling the pair of
   // CoInitialize/CoUninitialize, there is a helper function to retrieve the
   // object.
-  // http://msdn.microsoft.com/en-us/library/aa383439.aspx
+  // https://learn.microsoft.com/windows/win32/api/msctf/nf-msctf-tf_createcategorymgr
   auto category_mgr = ComCreateInstance<ITfCategoryMgr>(CLSID_TF_CategoryMgr);
   if (category_mgr) {
     for (const auto &category : kCategories) {
